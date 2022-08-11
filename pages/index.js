@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import {table, minifyRecords} from "./api/utils/airtable.js"
+import {table, minifyRecords} from "/api/utils/airtable.js"
 import Item from "/components/item.js";
 
 export default function Home({initialItems}) {
