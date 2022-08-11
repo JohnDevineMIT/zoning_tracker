@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>West Dallas Zoning Tracker</title> 
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
+        <style>
+            #map { 
+                position: relative;
+                height: 450px;
+            }
+            #background {
+                color: aliceblue;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container position-relative">
+            
+            <!-- DFP Header -->
+            <div class = "row">
+                <img src="DFP_header.png">
+            </div>
+            
+            
+            <!-- Title -->
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <h1>Dallas Zoning Case Tracker</h1>
+                </div>
+            </div>
+
+
+            <!-- Blurb -->
+            <div class="row mt-4">
+                <div class="col-3"></div>
+                <div class="col-6">
+                    <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras elementum neque diam, sed varius mauris ultricies ut. Integer vitae nulla in metus tempus eleifend. Praesent gravida sollicitudin tellus, vel tristique sapien elementum ac. Cras ultrices nisi quis varius viverra. Nulla consequat diam at sem tempor aliquet. Nunc vel molestie ligula, sed eleifend ex. Sed sagittis arcu sapien, a pellentesque lacus bibendum id. Nulla euismod nunc eget elit finibus tempus. In faucibus leo et pulvinar sagittis.
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+             <!-- Buttons -->
+             <div class="row mt-4">
+                <div class="col">
+                    <div class="btn-group" role="group" aria-label="Select Neighborhood">
+                        <button type="button" class="btn btn-primary" id="West-btn" onClick="toggleWest()">West Dallas</button> 
+                        <button type="button" class="btn btn-light" id="South-btn" onClick="toggleSouth()"> South Dallas</button>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="btn-group float-end" role="group" aria-label="Select Neighborhood">
+                        <button type="button" class="btn btn-secondary">Past</button> 
+                        <button type="button" class="btn btn-light">Upcoming</button>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Map -->
+            <div class="row mt-4 position-relative">
+            <div class="col-12 position-relative">
+            <div id='map'></div>
+            </div>
+            </div>
+            
+            <script>
+                // The value for 'accessToken' begins with 'pk...'
+                mapboxgl.accessToken = 'pk.eyJ1IjoiZ2FycmltIiwiYSI6ImNramc4aWRkMTE0ZzAyeXFwZG54eTFobnIifQ.zUa-muVxXAh3Dl6IJQY70g'; 
+            
+                const map = new mapboxgl.Map({
+                container: 'map',
+            
+                // Replace YOUR_STYLE_URL with your style URL.
+                style: 'mapbox://styles/garrim/cl5js8prj003d15pjrja960zv', 
+                center: [-96.862, 32.780],
+                zoom: 12.65
+                });
+
+                map.on('click', (event) => {
+                    // If the user clicked on one of your markers, get its information.
+                    const features = map.queryRenderedFeatures(event.point, {
+                      layers: ['West_Dallas','South_Dallas'] // replace with your layer name
+                    });
+                    if (!features.length) {
+                      return;
+                    }
+                    const feature = features[0];
+                  
+                    const popup = new mapboxgl.Popup({ offset: [0, -15] })
+                    .setLngLat(feature.geometry.coordinates)
+                    .setHTML(
+                    `<h3>${feature.properties["Address"]}</h3><a href="http://localhost:3000/items/${feature.properties['Case No.']}"> More Information </a>`
+                    )
+                
+                .addTo(map);
+                  });
+            </script>
+            
+            <script>
+                
+                //Start with West Dallas Toggled
+                map.on('load', () => {
+                    toggleWest();
+                })
+                
+                // Toggle South Dallas layer
+                function toggleSouth() {
+                    map.setLayoutProperty('West_Dallas', 'visibility', 'none');
+                    map.setLayoutProperty('South_Dallas', 'visibility', 'visible');
+                    map.flyTo({center: [-96.739, 32.766], zoom:11.5});
+                    document.getElementById("West-btn").className="btn btn-light";
+                    document.getElementById("South-btn").className="btn btn-primary";
+                }
+
+                 // Toggle West Dallas layer
+                 function toggleWest() {
+                    map.setLayoutProperty('West_Dallas', 'visibility', 'visible');
+                    map.setLayoutProperty('South_Dallas', 'visibility', 'none');
+                    map.flyTo({center: [-96.862, 32.780], zoom:12.65});
+                    document.getElementById("West-btn").className="btn btn-primary";
+                    document.getElementById("South-btn").className="btn btn-light";
+                }
+            </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+    </body>
+</html>
