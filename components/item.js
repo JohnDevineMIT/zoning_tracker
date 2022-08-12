@@ -7,10 +7,6 @@ export default function Item({item}) {
         <>
         <Head><title>{item.fields['case_no']}</title></Head>
 
-        <div className='mx-20'>
-            <Image src="/DFP_header.png" alt="header" layout="responsive" width={1906} height={151}/>
-        </div>
-
 
         <div className="container font-Raleway mt-10">
 
