@@ -92,7 +92,7 @@
                     const popup = new mapboxgl.Popup({ offset: [0, -15] })
                     .setLngLat(feature.geometry.coordinates)
                     .setHTML(
-                    `<h3>${feature.properties["Address"]}</h3><a href="http://localhost:3000/items/${feature.properties['Case No.']}"> More Information </a>`
+                    `<h3>${feature.properties["Address"]}</h3><a href="https://effortless-cocada-274307.netlify.app/items/${feature.properties['Case No.']}"> More Information </a>`
                     )
                 
                 .addTo(map);
