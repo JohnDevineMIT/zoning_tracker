@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import {table, minifyRecords} from "/Pages/Api/Utils/airtable.js"
-import Item from "/Components/item.js";
+import {table, minifyRecords} from "/pages/api/utils/airtable.js"
+import Item from "/components/item.js";
 
 
 export default function Item_Page({initialItems, search}) {
