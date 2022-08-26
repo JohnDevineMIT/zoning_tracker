@@ -16,53 +16,33 @@
             #background {
                 color: aliceblue;
             }
+            .img-max {
+                max-width: 500px;
+                width:350%;
+                  }
+            #textbox {
+                border-color: #001eaf;
+                border-width: 5px;
+            }
+            
         </style>
     </head>
     <body>
         <div class="container position-relative">
-            
-            <!-- DFP Header
-            <div class = "row">
-                <img src="DFP_header.png">
+        <div class="row">
+            <div class="col mx-auto mt-5 text-center">
+                <img src="ca_logo.png" class="img-max" alt="Responsive image">
             </div>
-            -->
-            
-            
-            <!-- Title
-            <div id="title" class="row mt-4">
-                <div class="col-12 text-center">
-                    <h1>Dallas Zoning Case Tracker</h1>
-                </div>
-            </div>
-
-
-            
-            <div class="row mt-4">
-                <div class="col-3"></div>
-                <div class="col-6">
-                    <p class="text-center">Use the map below to search for zoning cases in South and West Dallas. <br> Click on a case to learn more!
-                </div>
-                <div class="col-3"></div>
-            </div>
-            -->
+        </div>
 
              <!-- Buttons -->
              <div class="row mt-4">
-                <div class="col-12">
+                <div class="col-12 text-center">
                     <div class="btn-group text-center" role="group" aria-label="Select Neighborhood">
                         <button type="button" class="btn btn-primary" id="West-btn" onClick="toggleWest()">West Dallas</button> 
                         <button type="button" class="btn btn-light" id="South-btn" onClick="toggleSouth()"> South Dallas</button>
                     </div>
                 </div>
-                <!-- Buttons
-                <div class="col">
-                    <div class="btn-group float-end" role="group" aria-label="Select Neighborhood">
-                        <button type="button" class="btn btn-secondary">Past</button> 
-                        <button type="button" class="btn btn-light">Upcoming</button>
-                    </div>
-                </div>
-            </div>
-            -->
             
              <!-- Map -->
             <div class="row mt-4 position-relative">
