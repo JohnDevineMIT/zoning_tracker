@@ -21,3 +21,9 @@ td {
   padding: 15px;
   vertical-align: top;
 }
+
+.mapboxgl-canvas-container {
+
+height: 300px !important;
+
+}

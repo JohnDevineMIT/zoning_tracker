@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>DFP Zoning Tracker</title> 
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+
+    
+        <style>
+            #map { 
+                position: relative;
+                height: 600px;
+                width: 66%;
+            }
+            .img-max {
+                max-width: 500px;
+                width:35%;
+                  }
+        </style>
+    </head>
+
+    <body>
+
+        <!-- Logo -->
+        <div class="w-screen content-end place-content-center">
+            <img src="ca_logo.png" class="w-1/6 place-content-center mx-auto mt-10" alt="Civic Atlas Logo">
+        </div>
+
+        <!-- Blurb -->
+        <div class="w-2/6 place-content-center mx-auto mt-4">
+            <div class="p-5">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="w-2/6 mx-auto mt-4 flex justify-center">
+            <div class="inline-flex">
+                <button class="bg-gray-100 text-black py-2 px-4 rounded-l" id="west-btn" onclick="toggleWest()">
+                  West Dallas
+                </button>
+                <button class="bg-gray-100 text-black py-2 px-4 rounded-r" id="south-btn" onclick="toggleSouth()">
+                  South Dallas
+                </button>
+              </div>
+        </div>
+
+         <!-- Toggle Past / Upcoming -->
+        <div class="flex justify-center mt-4">
+            <div>
+              <div class="form-check">
+                <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="" id="checkUpcoming" onChange="toggleUpcoming()" checked>
+                <label class="form-check-label inline-block text-gray-800" for="flexCheckDefault">
+                  Upcoming Cases
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="" id="checkPast" onChange="togglePast()" checked>
+                <label class="form-check-label inline-block text-gray-800" for="flexCheckChecked">
+                  Past Cases
+                </label>
+              </div>
+            </div>
+          </div> 
+
+        <!-- Map -->
+        <div id='map' class="'w-2/3 mx-auto place-content-center mt-4 max-h-full"></div>
+
+        <script>
+            // The value for 'accessToken' begins with 'pk...'
+            mapboxgl.accessToken = 'pk.eyJ1IjoiZ2FycmltIiwiYSI6ImNramc4aWRkMTE0ZzAyeXFwZG54eTFobnIifQ.zUa-muVxXAh3Dl6IJQY70g'; 
+        
+            const map = new mapboxgl.Map({
+            container: 'map',
+        
+            // Replace YOUR_STYLE_URL with your style URL.
+            style: 'mapbox://styles/garrim/cl5js8prj003d15pjrja960zv', 
+            center: [-96.862, 32.780],
+            zoom: 12.65
+            });
+
+            map.on('click', (event) => {
+                // If the user clicked on one of your markers, get its information.
+                const features = map.queryRenderedFeatures(event.point, {
+                  layers: ['West_Dallas','South_Dallas'] // replace with your layer name
+                });
+                if (!features.length) {
+                  return;
+                }
+                const feature = features[0];
+              
+                const popup = new mapboxgl.Popup({ offset: [0, -15] })
+                .setLngLat(feature.geometry.coordinates)
+                .setHTML(
+                `<h3 class="font-bold text-lg">${feature.properties["Address"]}</h3>
+                <p>${feature.properties['Brief description']}
+                <br>
+                <a href="http://localhost:3000/items/${feature.properties['Case No.']}"> More Information </a>`
+                )
+            
+            .addTo(map);
+              });
+        </script>
+        
+        <script>
+            
+            //Start with West Dallas Toggled
+            map.on('load', () => {
+                toggleWest();
+                toggleUpcoming();
+            })
+
+            map.on('render', () => {
+                map.resize();
+            })
+            
+            // Toggle South Dallas layer
+            function toggleSouth() {
+                map.setLayoutProperty('West_Dallas', 'visibility', 'none');
+                map.setLayoutProperty('South_Dallas', 'visibility', 'visible');
+                map.flyTo({center: [-96.739, 32.766], zoom:11.5});
+                document.getElementById("south-btn").className="bg-blue-500 text-white py-2 px-4 rounded-l";
+                document.getElementById("west-btn").className="bg-gray-100 text-black py-2 px-4 rounded-l";
+                console.log("success");
+            }
+
+             // Toggle West Dallas layer
+             function toggleWest() {
+                map.setLayoutProperty('West_Dallas', 'visibility', 'visible');
+                map.setLayoutProperty('South_Dallas', 'visibility', 'none');
+                map.flyTo({center: [-96.862, 32.780], zoom:12.65});
+                document.getElementById("south-btn").className="bg-gray-100 text-black py-2 px-4 rounded-l";
+                document.getElementById("west-btn").className="bg-blue-500 text-white py-2 px-4 rounded-l";
+                console.log("success");
+            }
+
+             // Toggle West Dallas layer
+             function togglePast() {
+                if (document.getElementById('checkPast').checked == true) {
+                map.setLayoutProperty('West_Dallas', 'visibility', 'visible');
+                map.setLayoutProperty('South_Dallas', 'visibility', 'visible');
+                console.log("success");
+                }
+                else {
+                map.setLayoutProperty('West_Dallas', 'visibility', 'none');
+                map.setLayoutProperty('South_Dallas', 'visibility', 'none');
+                }
+            }
+            
+               // Toggle West Dallas layer
+               function toggleUpcoming() {
+                if (document.getElementById('checkUpcoming').checked == true) {
+                map.setLayoutProperty('West_Dallas_Upcoming', 'visibility', 'visible');
+                map.setLayoutProperty('South_Dallas_Upcoming', 'visibility', 'visible');
+                console.log("success");
+                }
+                else {
+                map.setLayoutProperty('West_Dallas_Upcoming', 'visibility', 'none');
+                map.setLayoutProperty('South_Dallas_Upcoming', 'visibility', 'none');
+                }
+            }
+
+
+        </script>
+
+    </body>
+
+
+    </html>

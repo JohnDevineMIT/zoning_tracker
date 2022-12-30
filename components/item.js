@@ -1,11 +1,15 @@
 import React from 'react'
 import Head from "next/head";
 import Image from "next/image";
+import Script from 'next/script';
+import Map from './map';
 
 export default function Item({item}) {
     return(
         <>
-        <Head><title>{item.fields['case_no']}</title></Head>
+        <Head>
+        <title>{item.fields['case_no']}</title>
+        </Head>
 
 
         <div className="container font-Raleway mt-10">
@@ -16,7 +20,8 @@ export default function Item({item}) {
             
             <div className = "border-2 border-blue-700 p-5 max-w-xl mx-auto mb-20">
                 <div className="mx-auto mb-5">
-                <Image src="/map_placeholder.png" alt="map" layout="responsive" width={538} height={311}/>
+                <div id='map' className="'w-2/3 mx-auto place-content-center max-h-full"></div>
+                <Map alt="map" layout="responsive" width={538} height={311} lat={item.fields['lat']} lng={item.fields['lng']}></Map>
                 </div>
                 <table className="table-auto border-spacing-5">
                         <tbody>
