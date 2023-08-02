@@ -21,7 +21,6 @@
                 min-height: 75px;
                   }
         </style>
-        
 
          <!-- Container for Heading -->
          <div class="w-6/6 flex">
@@ -112,11 +111,11 @@
             zoom: 12.65
             });
 
-map.on('load', function() {
-    $('.mapboxgl-canvas').css('width', '100%');
-    $('.mapboxgl-canvas').css('height', '100%');
-    map.resize();
-});
+            map.on('load', function() {
+                $('.mapboxgl-canvas').css('width', '100%');
+                $('.mapboxgl-canvas').css('height', '100%');
+                map.resize();
+            });
             map.on('click', (event) => {
                 // If the user clicked on one of your markers, get its information.
                 const features = map.queryRenderedFeatures(event.point, {

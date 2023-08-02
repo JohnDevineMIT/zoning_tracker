@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@preline/overlay": "^1.4.0",
     "airtable": "^0.11.4",
     "bootstrap": "^5.2.0",
     "mapbox-gl": "^2.11.1",
